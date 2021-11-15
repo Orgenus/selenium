@@ -433,6 +433,7 @@ func (wd *remoteWD) NewSession() (string, error) {
 			"desiredCapabilities": wd.capabilities,
 		}}}
 
+	var sessionId string
 	for i, s := range attempts {
 		data, err := json.Marshal(s.params)
 		if err != nil {
@@ -491,6 +492,9 @@ func (wd *remoteWD) NewSession() (string, error) {
 			if err := json.Unmarshal(reply.Value, &value); err != nil {
 				return "", fmt.Errorf("error unmarshalling value: %v", err)
 			}
+
+			sessionId = value.SessionID
+
 			if value.SessionID != "" {
 				wd.id = value.SessionID
 			}
@@ -515,7 +519,7 @@ func (wd *remoteWD) NewSession() (string, error) {
 			}
 		}
 
-		return wd.id, nil
+		return sessionId, nil
 	}
 	panic("unreachable")
 }
