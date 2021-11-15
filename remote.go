@@ -491,7 +491,7 @@ func (wd *remoteWD) NewSession() (string, error) {
 			if err := json.Unmarshal(reply.Value, &value); err != nil {
 				return "", fmt.Errorf("error unmarshalling value: %v", err)
 			}
-			if value.SessionID != "" && wd.id == "" {
+			if value.SessionID != "" {
 				wd.id = value.SessionID
 			}
 			var caps returnedCapabilities
